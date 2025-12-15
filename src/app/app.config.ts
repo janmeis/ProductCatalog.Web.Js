@@ -10,8 +10,11 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 registerLocaleData(en);
+// Register all Community features
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const appConfig: ApplicationConfig = {
   providers: [

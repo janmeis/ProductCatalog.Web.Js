@@ -2,9 +2,17 @@
 // Custom Theming for NG-ZORRO
 // For more information: https://ng.ant.design/docs/customize-theme/en
 @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+// @import "../node_modules/ag-grid-community/styles/ag-grid.css";
+// @import "../node_modules/ag-grid-community/styles/ag-theme-material.css";
 
 // Override less variables to here
 // View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
 
 // @primary-color: #1890ff;
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  /* override value of backgroundColor, foregroundColor and spacing parameters */
+  --ag-browser-color-scheme: light;
+  --ag-accent-color: #2195f3c2;
+}
