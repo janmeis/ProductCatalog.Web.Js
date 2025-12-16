@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import type { ColDef, GridOptions } from 'ag-grid-community'; // Column Definition Type Interface
 import { AG_GRID_LOCALE_CZ } from '@ag-grid-community/locale';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-monitor-grid',
@@ -13,6 +15,9 @@ import { AG_GRID_LOCALE_CZ } from '@ag-grid-community/locale';
   styleUrl: './monitor-grid.component.less'
 })
 export class MonitorGridComponent {
+  private platformId = inject(PLATFORM_ID);
+  isBrowser = isPlatformBrowser(this.platformId);
+
   // Row Data Signal: The data to be displayed via Angular Signals.
   rowData = signal(new Array(5).fill([
       { make: "Tesla", model: "Model Y", price: 64950, electric: true },
@@ -27,7 +32,7 @@ export class MonitorGridComponent {
   };
 
   gridOptions: GridOptions = {
-    rowSelection: 'single',
+    rowSelection: { mode: 'singleRow'},
     cellSelection: false,
     autoSizeStrategy: { type: 'fitGridWidth' },
     alwaysShowVerticalScroll: true,

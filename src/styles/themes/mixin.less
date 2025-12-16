@@ -1,0 +1,35 @@
+// .themeMixin(@rules) {
+//   html {
+//     /* Provide only the minimal variables used by component styles,
+//        avoiding imports that trigger ng-zorro's Less color plugins. */
+//     &.default {
+//       @primary-1: #e6f7ff; // Ant default primary-1
+//       @text-color: rgba(0, 0, 0, 0.85);
+//       @layout-sider-background: #fff;
+//       @layout-trigger-background: #fff;
+//       @layout-header-background: #fff;
+//       @rules();
+//     }
+//     &.dark {
+//       @primary-1: #111a2c; // Ant dark primary-1 approximation
+//       @text-color: rgba(255, 255, 255, 0.85);
+//       @layout-sider-background: #141414;
+//       @layout-trigger-background: #141414;
+//       @layout-header-background: #141414;
+//       @rules();
+//     }
+//   }
+// }
+.themeMixin(@rules) {
+  html {
+    &.default {
+      @import './default.less';
+      @rules();
+    }
+
+    &.dark {
+      @import './dark.less';
+      @rules();
+    }
+  }
+}
