@@ -20,15 +20,15 @@ export class App implements AfterViewInit {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     if (this.isBrowser) {
-      this.themeService.loadTheme().then();
+      await this.themeService.loadTheme();
     }
   }
 
-  toggleTheme(): void {
+  async toggleTheme(): Promise<void> {
     if (this.isBrowser) {
-      this.themeService.toggleTheme().then();
+      await this.themeService.toggleTheme();
     }
   }
 }

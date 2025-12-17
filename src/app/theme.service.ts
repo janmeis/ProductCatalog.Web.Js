@@ -1,7 +1,7 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-enum ThemeType {
+export enum ThemeType {
   dark = 'dark',
   default = 'default',
 }
@@ -12,9 +12,12 @@ enum ThemeType {
 export class ThemeService {
   currentTheme = ThemeType.default;
   private readonly isBrowser: boolean;
+  // Reactive theme state for components to subscribe to
+  theme = signal<ThemeType>(ThemeType.default);
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
+    this.theme.set(this.currentTheme);
   }
 
   private reverseTheme(theme: string): ThemeType {
@@ -53,12 +56,16 @@ export class ThemeService {
       if (!firstLoad) {
         document.documentElement.classList.add(theme);
       }
+      // Notify subscribers after ensuring classes/styles are applied
+      this.theme.set(this.currentTheme);
       this.removeUnusedTheme(this.reverseTheme(theme));
     });
   }
 
   public toggleTheme(): Promise<void> {
     this.currentTheme = this.reverseTheme(this.currentTheme);
+    // Emit immediately for reactive consumers; CSS swap follows
+    this.theme.set(this.currentTheme);
     return this.loadTheme(false);
   }
 }
