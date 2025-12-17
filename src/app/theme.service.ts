@@ -33,7 +33,7 @@ export class ThemeService {
     }
   }
 
-  private loadCss(href: string, id: string): Promise<void> {
+  private async loadCss(href: string, id: string): Promise<void> {
     if (!this.isBrowser) return Promise.resolve();
     return new Promise<void>((resolve, reject) => {
       const style = document.createElement('link');
@@ -46,23 +46,22 @@ export class ThemeService {
     });
   }
 
-  public loadTheme(firstLoad = true): Promise<void> {
+  async loadTheme(firstLoad = true): Promise<void> {
     const theme = this.currentTheme;
     if (!this.isBrowser) return Promise.resolve();
     if (firstLoad) {
       document.documentElement.classList.add(theme);
     }
-    return this.loadCss(`${theme}.css`, theme).then(() => {
-      if (!firstLoad) {
-        document.documentElement.classList.add(theme);
-      }
-      // Notify subscribers after ensuring classes/styles are applied
-      this.theme.set(this.currentTheme);
-      this.removeUnusedTheme(this.reverseTheme(theme));
-    });
+    await this.loadCss(`${theme}.css`, theme);
+    if (!firstLoad) {
+      document.documentElement.classList.add(theme);
+    }
+    // Notify subscribers after ensuring classes/styles are applied
+    this.theme.set(this.currentTheme);
+    this.removeUnusedTheme(this.reverseTheme(theme));
   }
 
-  public toggleTheme(): Promise<void> {
+  async toggleTheme(): Promise<void> {
     this.currentTheme = this.reverseTheme(this.currentTheme);
     // Emit immediately for reactive consumers; CSS swap follows
     this.theme.set(this.currentTheme);
