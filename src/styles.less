@@ -1,4 +1,3 @@
-
 // Custom Theming for NG-ZORRO
 // For more information: https://ng.ant.design/docs/customize-theme/en
 // @import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
@@ -10,14 +9,23 @@
 
 // @primary-color: #1890ff;
 /* You can add global styles to this file, and also import other style files */
-// @primary-color: #f5222d;
 
-* {
-  /* override value of backgroundColor, foregroundColor and spacing parameters */
-  --ag-accent-color: #0059a1;
-  --ag-header-background-color: #9e6f6f94;
-  --ag-header-text-color: #ffffffb0;
-  --ag-header-font-size: 16px;
-  --ag-header-font-weight: bold;
-  --ag-odd-row-background-color: #d4d4d4;
-}
+// Mixin to set @header-bg-color with configurable percent
+// .set-header-bg-color(@percent: 6%) {
+//   background-color: color-mix(in srgb, var(--ag-background-color), var(--ag-foreground-color) @percent);
+// }
+
+// body {
+//   /* override value of backgroundColor, foregroundColor and spacing parameters */
+//   --ag-accent-color: #0059a1;
+//   --ag-header-font-size: 16px;
+
+//   --ag-odd-row-background-color: var(--ag-header-background-color);
+//   --ag-header-row-border: false;
+//   --ag-wrapper-border: false;
+//   --ag-wrapper-border-radius: 0;
+
+//   .ag-header {
+//     .set-header-bg-color(10%);
+//   }
+// }

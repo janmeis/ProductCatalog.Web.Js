@@ -1,9 +1,10 @@
 <!-- The AG Grid component (render only in browser to avoid SSR errors) -->
 @if (isBrowser) {
-  <ag-grid-angular
-    [rowData]="rowData()"
-    [gridOptions]="gridOptions"
-    style="height: 420px"
-    [defaultColDef]="defaultColDef"
-    [columnDefs]="colDefs" />
+<ag-grid-angular
+  style="height: 420px"
+  [theme]="theme"
+  [gridOptions]="gridOptions"
+  [defaultColDef]="defaultColDef"
+  [columnDefs]="colDefs"
+  [rowData]="rowData()" />
 }
