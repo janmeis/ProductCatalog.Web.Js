@@ -1,13 +1,16 @@
-import { AG_GRID_LOCALE_CZ } from '@ag-grid-community/locale';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
-import type { ColDef, GridOptions } from 'ag-grid-community'; // Column Definition Type Interface
-import { ThemeService, ThemeType } from '../../theme.service';
+import type { ColDef } from 'ag-grid-community'; // Column Definition Type Interface
+import { IListFilter } from '../../models/ListFilter';
+import { IPageResult } from '../../models/PageResult';
+import { IProductDto } from '../../models/ProductDto';
+import { ProductOfferingType } from '../../models/ProductOfferingType';
+import { ProductState } from '../../models/ProductState';
+import { ApiBaseService } from '../../services/api-base.service';
+import { ThemeService, ThemeType } from '../../services/theme.service';
 import { themeDark, themeLight } from './grid-themes';
-import { User } from '../../models/user';
-import { httpResource } from '@angular/common/http';
 
 @Component({
   selector: 'app-monitor-grid',
@@ -18,8 +21,12 @@ import { httpResource } from '@angular/common/http';
 })
 export class MonitorGridComponent {
   private themeService = inject(ThemeService);
+  private apiBase: ApiBaseService = inject(ApiBaseService);
   theme = themeLight;
-  rowDataResource = httpResource<User[]>(() => 'https://jsonplaceholder.typicode.com/users');
+  private productFilter = {
+    PageInfo: { PageNumber: 1, PageSize: 50 }
+  } as IListFilter;
+  productResource = this.apiBase.post<IPageResult<IProductDto>>('products/list', null, this.productFilter);
 
   // React to global theme changes via ThemeService
   private themeEffect = effect(() => {
@@ -27,12 +34,18 @@ export class MonitorGridComponent {
     this.theme = current === ThemeType.dark ? themeDark : themeLight;
   });
 
-  // Column Definitions: Display user fields, with nested mappers for city and company name.
+  // Column Definitions: match IProductDto fields
   colDefs: ColDef[] = [
-    { headerName: 'Name', field: 'name' },
-    { headerName: 'Username', field: 'username' },
-    { headerName: 'Email', field: 'email' },
-    { headerName: 'City', valueGetter: params => params.data?.address?.city },
-    { headerName: 'Company', valueGetter: params => params.data?.company?.name }
+    { headerName: 'Název', field: 'Name' },
+    { headerName: 'Název 2', field: 'Name2' },
+    { headerName: 'Název EN', field: 'NameEN' },
+    { headerName: 'Typ', field: 'Type', valueFormatter: params => params.value !== undefined ? ProductOfferingType[params.value as number] : '' },
+    { headerName: 'Pořadí', field: 'Order', width: 80 },
+    { headerName: 'Stav', field: 'State', valueFormatter: params => params.value !== undefined ? ProductState[params.value as number] : '' },
+    { headerName: 'Poslední změna stavu', field: 'LastStateChangeDate', valueFormatter: params => params.value ? formatDate(params.value, 'dd.MM.yyyy hh:mm', 'cs-CZ' ) : '' },
+    { headerName: 'Print Composite', field: 'PrintComposite', width: 80}
   ];
 }
+
+
+

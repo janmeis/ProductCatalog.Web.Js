@@ -2,4 +2,4 @@
   style="height: 420px"
   [theme]="theme"
   [columnDefs]="colDefs"
-  [rowData]="rowDataResource.value()" />
+  [rowData]="productResource.value()?.Items ?? []" />

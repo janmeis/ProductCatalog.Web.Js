@@ -1,4 +1,4 @@
-export interface UserDto {
+export interface IUserDto {
   Id: number;
   Name: string;
   Surname: string;

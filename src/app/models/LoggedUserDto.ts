@@ -1,7 +1,7 @@
-import type { UserDto } from './UserDto';
+import type { IUserDto } from './UserDto';
 import type { UserRoles } from './UserRoles';
 
-export interface LoggedUserDto extends UserDto {
+export interface ILoggedUserDto extends IUserDto {
   Roles: UserRoles;
   Delegates: number[];
   Segments: number[];
