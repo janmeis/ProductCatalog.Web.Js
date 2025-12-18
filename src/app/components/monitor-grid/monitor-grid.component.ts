@@ -1,6 +1,6 @@
 import { AG_GRID_LOCALE_CZ } from '@ag-grid-community/locale';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, effect, inject, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import type { ColDef, GridOptions } from 'ag-grid-community'; // Column Definition Type Interface
@@ -17,8 +17,6 @@ import { httpResource } from '@angular/common/http';
   styleUrl: './monitor-grid.component.less'
 })
 export class MonitorGridComponent {
-  private readonly platformId: Object = inject(PLATFORM_ID);
-  readonly isBrowser: boolean = isPlatformBrowser(this.platformId);
   private themeService = inject(ThemeService);
   theme = themeLight;
   rowDataResource = httpResource<User[]>(() => 'https://jsonplaceholder.typicode.com/users');

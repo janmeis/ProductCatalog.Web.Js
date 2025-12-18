@@ -1,5 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, signal } from '@angular/core';
 
 export enum ThemeType {
   dark = 'dark',
@@ -11,12 +10,10 @@ export enum ThemeType {
 })
 export class ThemeService {
   currentTheme = ThemeType.default;
-  private readonly isBrowser: boolean;
   // Reactive theme state for components to subscribe to
   theme = signal<ThemeType>(ThemeType.default);
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  constructor() {
     this.theme.set(this.currentTheme);
   }
 
@@ -25,7 +22,6 @@ export class ThemeService {
   }
 
   private removeUnusedTheme(theme: ThemeType): void {
-    if (!this.isBrowser) return;
     document.documentElement.classList.remove(theme);
     const removedThemeStyle = document.getElementById(theme);
     if (removedThemeStyle) {
@@ -34,7 +30,6 @@ export class ThemeService {
   }
 
   private async loadCss(href: string, id: string): Promise<void> {
-    if (!this.isBrowser) return Promise.resolve();
     return new Promise<void>((resolve, reject) => {
       const style = document.createElement('link');
       style.rel = 'stylesheet';
@@ -48,7 +43,6 @@ export class ThemeService {
 
   async loadTheme(firstLoad = true): Promise<void> {
     const theme = this.currentTheme;
-    if (!this.isBrowser) return Promise.resolve();
     if (firstLoad) {
       document.documentElement.classList.add(theme);
     }

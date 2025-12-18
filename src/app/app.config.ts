@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import cs from '@angular/common/locales/cs';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+// SSR hydration removed; no client hydration providers
 import { AllCommunityModule, ModuleRegistry, type ColDef } from 'ag-grid-community';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
@@ -37,6 +37,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes), provideClientHydration(withEventReplay()), provideNzIcons(icons), provideNzI18n(en_US), provideAnimationsAsync(), provideHttpClient(withFetch())
+    provideRouter(routes), provideNzIcons(icons), provideNzI18n(en_US), provideAnimationsAsync(), provideHttpClient(withFetch())
   ]
 };

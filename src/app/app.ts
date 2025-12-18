@@ -1,6 +1,5 @@
-import { isPlatformBrowser } from '@angular/common';
 import { httpResource } from '@angular/common/http';
-import { AfterViewInit, Component, inject, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, effect, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -16,8 +15,6 @@ import { ThemeService } from './theme.service';
 })
 export class App implements AfterViewInit {
   isCollapsed = false;
-  private readonly platformId: Object = inject(PLATFORM_ID);
-  readonly isBrowser: boolean = isPlatformBrowser(this.platformId);
   private themeService: ThemeService = inject(ThemeService);
   loggedUser: LoggedUserDto | null = null;
   loggedUserResource = httpResource<LoggedUserDto>(() => ({
@@ -28,19 +25,20 @@ export class App implements AfterViewInit {
       }
   }));
 
-  async ngAfterViewInit(): Promise<void> {
-    if (this.isBrowser) {
-      await this.themeService.loadTheme();
-    }
+  loggedUserEffect = effect(() => {
     if (this.loggedUserResource.hasValue()) {
       this.loggedUser = this.loggedUserResource.value();
       console.log('Fetched logged user:', this.loggedUser);
+    } else if (this.loggedUserResource.error()) {
+      console.error('Error fetching logged user:', this.loggedUserResource.error());
     }
+  });
+
+  async ngAfterViewInit(): Promise<void> {
+    await this.themeService.loadTheme();
   }
 
   async toggleTheme(): Promise<void> {
-    if (this.isBrowser) {
-      await this.themeService.toggleTheme();
-    }
+    await this.themeService.toggleTheme();
   }
 }

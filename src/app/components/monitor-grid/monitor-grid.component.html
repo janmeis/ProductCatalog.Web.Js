@@ -1,8 +1,5 @@
-<!-- The AG Grid component (render only in browser to avoid SSR errors) -->
-@if (isBrowser && rowDataResource.hasValue()) {
 <ag-grid-angular
   style="height: 420px"
   [theme]="theme"
   [columnDefs]="colDefs"
   [rowData]="rowDataResource.value()" />
-}
